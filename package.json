@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-chat-app",
+  "version": "1.0.0",
+  "description": "Real time chat application created in nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shubhamgupta2901/nodejs-chat-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shubhamgupta2901/nodejs-chat-app/issues"
+  },
+  "homepage": "https://github.com/shubhamgupta2901/nodejs-chat-app#readme"
+}
