@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/shubhamgupta2901/nodejs-chat-app/issues"
   },
-  "homepage": "https://github.com/shubhamgupta2901/nodejs-chat-app#readme"
+  "homepage": "https://github.com/shubhamgupta2901/nodejs-chat-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
