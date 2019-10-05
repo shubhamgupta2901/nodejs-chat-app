@@ -1,18 +1,17 @@
 
 const socket = io();  
 
-//Listening to init event
-socket.on('init', (message)=> {
-    console.log(message);
+const form = document.querySelector('form');
+const messageInput = document.querySelector('input');
+
+form.addEventListener('submit',(event)=>{
+    event.preventDefault(); 
+    const message = messageInput.value;
+    if(message){
+        socket.emit('sendMessage',message);
+    }
 })
 
-// Listening to countUpdated event.
-socket.on('countUpdated',(count)=>{
-    console.log('The count has been updated', count);
-});
-
-//triggering increment event on button click
-document.querySelector('#increment').addEventListener('click',()=>{
-    console.log('Button Clicked');
-    socket.emit('increment');
-})  
+socket.on('message',message=>{
+    console.log(message);
+})

@@ -19,18 +19,17 @@ const port = 3000;
 const publicDirectoryPath = path.join(__dirname,'../public');
 app.use(express.static(publicDirectoryPath));
 
-let count = 0;
+// let count = 0;
 //Listening for web socket connections from client
 io.on('connection',(socket)=>{
     console.log('New web socket connection');
-    socket.emit('init','Web socket connection to backend successful!');
-    
-    //Registering new event of incrementing count
-    socket.on('increment', ()=>{
-        count++;
-        //when we use socket.emit we emit event to a particular connection.so we use io.emit
-        // socket.emit('countUpdated', count);
-        io.emit('countUpdated', count);
+    socket.emit('message','Welcome from server!');
+    socket.broadcast.emit('message', 'A new user has joined chat.')
+    socket.on('sendMessage',(message)=>{
+        io.emit('message',message);
+    })
+    socket.on('disconnect', ()=>{
+        io.emit('message','A user has left');
     })
 })
 
