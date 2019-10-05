@@ -9,7 +9,9 @@ form.addEventListener('submit',(event)=>{
     event.preventDefault(); 
     const message = messageInput.value;
     if(message){
-        socket.emit('sendMessage',message);
+        socket.emit('sendMessage',message,(callbackMessage)=>{
+                console.log(callbackMessage);
+        });
     }
 })
 
@@ -20,7 +22,9 @@ sendLocationButton.addEventListener('click', (event)=>{
     navigator.geolocation.getCurrentPosition((position) =>{
         const {latitude, longitude} = position.coords;
         console.log(latitude, longitude);
-        socket.emit('sendLocation',{latitude, longitude})
+        socket.emit('sendLocation',{latitude, longitude},(callbackMessage)=>{
+            console.log('Location shared!');
+        })
      });
 })
 

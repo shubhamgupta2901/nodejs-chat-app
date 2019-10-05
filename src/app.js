@@ -2,7 +2,9 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
-
+const Filter = require('bad-words');
+const filter = new Filter();
+ 
 /**
  * Changing the way we create a web server with express.
  * This work of creating http server is done by express under the hood, we are it explicitly to use socket.io as well
@@ -25,12 +27,19 @@ io.on('connection',(socket)=>{
     console.log('New web socket connection');
     socket.emit('message','Welcome from server!');
     socket.broadcast.emit('message', 'A new user has joined chat.')
-    socket.on('sendMessage',(message)=>{
+    
+    socket.on('sendMessage',(message, callback)=>{
+
+        if(filter.isProfane(message)){
+            return callback('Profanity is not allowed');
+        }
         io.emit('message',message);
+        callback('message delivered');
     })
 
-    socket.on('sendLocation',({latitude, longitude})=>{
+    socket.on('sendLocation',({latitude, longitude}, callback)=>{
         io.emit('message', `https://google.com/maps?q=${latitude},${longitude}`);
+        callback('Location shared');
     })
     socket.on('disconnect', ()=>{
         io.emit('message','A user has left');
