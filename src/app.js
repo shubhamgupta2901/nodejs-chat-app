@@ -19,9 +19,21 @@ const port = 3000;
 const publicDirectoryPath = path.join(__dirname,'../public');
 app.use(express.static(publicDirectoryPath));
 
-io.on('connection',()=>{
+let count = 0;
+//Listening for web socket connections from client
+io.on('connection',(socket)=>{
     console.log('New web socket connection');
+    socket.emit('init','Web socket connection to backend successful!');
+    
+    //Registering new event of incrementing count
+    socket.on('increment', ()=>{
+        count++;
+        //when we use socket.emit we emit event to a particular connection.so we use io.emit
+        // socket.emit('countUpdated', count);
+        io.emit('countUpdated', count);
+    })
 })
+
 
 server.listen(port,()=>{
     console.log(`Server is up on port ${port}`);
