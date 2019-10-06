@@ -27,10 +27,13 @@ app.use(express.static(publicDirectoryPath));
 //Listening for web socket connections from client
 io.on('connection',(socket)=>{
     console.log('New web socket connection');
-    socket.emit('message',generateMessage('Welcome from server!'));
-
-    socket.broadcast.emit('message', generateMessage('A new user has joined chat.'));
     
+    socket.on('join',({username, room})=>{
+        socket.join(room);
+        socket.emit('message',generateMessage(`Welcome to ${room} room!`));
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined chat.`));
+    });
+
     socket.on('sendMessage',(message, callback)=>{
 
         if(filter.isProfane(message)){
@@ -38,15 +41,17 @@ io.on('connection',(socket)=>{
         }
         io.emit('message',generateMessage(message));
         callback('message delivered');
-    })
+    });
 
     socket.on('sendLocation',({latitude, longitude}, callback)=>{
         io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${latitude},${longitude}`));
         callback('Location shared');
-    })
+    });
+
     socket.on('disconnect', ()=>{
         io.emit('message',generateMessage('A user has left.'));
-    })
+    });
+    
 })
 
 server.listen(port,()=>{

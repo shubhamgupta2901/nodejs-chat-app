@@ -11,6 +11,11 @@ const $messageContainer = document.querySelector('#messages');
 //Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML;
+
+// Options parsing query string
+const {username, room} = Qs.parse(location.search,{ignoreQueryPrefix: true});
+console.log(username, room);
+
 socket.on('message',message=>{
     let {text, createdAt} = message;
     createdAt = moment(createdAt).format('h:mm a');
@@ -53,4 +58,6 @@ $sendLocationButton.addEventListener('click', (event)=>{
         })
      });
 })
+
+socket.emit('join',{username, room});
 
