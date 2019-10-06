@@ -5,7 +5,7 @@ const addUser = ({id, username, room}) =>{
     room = room.trim().toLowerCase();
     
     if(!username || !room){
-        return { erorr: 'Username and room are required.'};
+        return { error: 'Username and room are required.'};
     }
 
     //Check for existing user
@@ -16,7 +16,7 @@ const addUser = ({id, username, room}) =>{
 
     const user = {id,username,room};
     users.push(user);
-    return user;
+    return {user};
 }
 
 const removeUser = (id) => {
@@ -24,8 +24,9 @@ const removeUser = (id) => {
     if(userIndex === -1){
         return {error: "User does not exist"};
     }
+    const deletedUser = users[userIndex];
     users.splice(userIndex,1);
-    return {}
+    return {user: deletedUser};
 }
 
 const getUser = (id) => {
