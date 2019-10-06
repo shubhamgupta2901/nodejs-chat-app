@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat App</title>
     <link rel="icon" href="/img/favicon.png">
-    <link rel="stylesheet" href="/css/styles.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div class="chat">
@@ -44,6 +44,20 @@
                 <a href="{{url}}" target="_blank">Location</a>
             </p>
         </div>
+    </script>
+
+    <script id="sidebar-template" type="text-html">
+        <div>
+            <p class="room-title">{{room}}</p>
+            <p class="list-title">Users</p>
+            <ul class="users"></ul>
+        </div>
+    </script>
+
+    <script id="sidebar-user-template" type="text-html">
+        <li>
+            <p>{{username}}</p>
+        </li>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

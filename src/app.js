@@ -39,6 +39,10 @@ io.on('connection',(socket)=>{
         socket.join(user.room);
         socket.emit('message',generateMessage('System',`Welcome to ${user.room} room!`));
         socket.broadcast.to(user.room).emit('message', generateMessage('System',`${user.username} has joined chat.`));
+        socket.emit('roomdata',{
+            room: user.room,
+            users: getUsersInRoom(user.room),
+        });
     });
 
     socket.on('sendMessage',(message, callback)=>{
@@ -69,6 +73,10 @@ io.on('connection',(socket)=>{
             return;
         }
         socket.broadcast.to(user.room).emit('message',generateMessage('System',`${user.username} has left.`));
+        socket.emit('roomdata',{
+            room: user.room,
+            users: getUsersInRoom(user.room),
+        })
     });
     
 })
