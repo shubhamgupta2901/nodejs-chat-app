@@ -32,13 +32,13 @@ io.on('connection',(socket)=>{
         const {error, user} = addUser({id: socket.id,username, room});
         if(error){
             console.log(error);
-            socket.emit('message', generateMessage(error));
+            socket.emit('message', generateMessage('System',error));
             callback(error);
             return;
         }
         socket.join(user.room);
-        socket.emit('message',generateMessage(`Welcome to ${user.room} room!`));
-        socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined chat.`));
+        socket.emit('message',generateMessage('System',`Welcome to ${user.room} room!`));
+        socket.broadcast.to(user.room).emit('message', generateMessage('System',`${user.username} has joined chat.`));
     });
 
     socket.on('sendMessage',(message, callback)=>{
@@ -49,7 +49,7 @@ io.on('connection',(socket)=>{
         if(!user){
             callback(`Not delivering message.`)
         }
-        io.to(user.room).emit('message',generateMessage(message));
+        io.to(user.room).emit('message',generateMessage(user.username,message));
         callback('message delivered');
     });
 
@@ -58,7 +58,7 @@ io.on('connection',(socket)=>{
         if(!user){
             callback(`Not delivering message.`)
         }
-        io.to(user.room).emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${latitude},${longitude}`));
+        io.to(user.room).emit('locationMessage', generateLocationMessage(user.username,`https://google.com/maps?q=${latitude},${longitude}`));
         callback('Location shared');
     });
 
@@ -68,7 +68,7 @@ io.on('connection',(socket)=>{
             console.log('disconnect',error);
             return;
         }
-        socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has left.`));
+        socket.broadcast.to(user.room).emit('message',generateMessage('System',`${user.username} has left.`));
     });
     
 })
